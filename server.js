@@ -2,6 +2,23 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { parse } = require('querystring');
+const mysql = require('mysql'); 
+
+const db = mysql.createConnection({
+  host: 'localhost', 
+  user: 'root', 
+  password: 'Pranesh@123', 
+  database: 'login_db', 
+});
+
+// Connect to MySQL
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
+  }
+  console.log('Connected to MySQL');
+});
 
 const server = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/') {
@@ -27,12 +44,23 @@ const server = http.createServer((req, res) => {
       const username = formData.username;
       const password = formData.password;
 
-      // For demonstration purposes, you can check the username and password here
-      // Replace this with your actual authentication logic
-
-      // Respond with a message
-      res.writeHead(200, { 'Content-Type': 'text/plain' });
-      res.end(`Received username: ${username}, password: ${password}`);
+      // Validate the username and password against the MySQL database
+      const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
+      db.query(query, [username, password], (err, results) => {
+        if (err) {
+          console.error('Error querying MySQL:', err);
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end('Internal Server Error');
+        } else if (results.length === 1) {
+          // Valid credentials
+          res.writeHead(200, { 'Content-Type': 'text/plain' });
+          res.end('Congratulations! Login successful.');
+        } else {
+          // Invalid credentials
+          res.writeHead(401, { 'Content-Type': 'text/plain' });
+          res.end('Invalid username or password.');
+        }
+      });
     });
   } else {
     // Handle other requests (e.g., 404)
