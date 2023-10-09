@@ -40,7 +40,18 @@ app.post('/register', (req, res) => {
   const insertQuery = `INSERT INTO users (username, email, password, name) VALUES (?, ?, ?, ?)`;
   db.query(insertQuery, [username, email, password, name], (err, result) => {
     if (err) {
-      res.status(500).send('Registration failed');
+      const errorHTML = `
+        <html>
+        <head>
+            <title>Registration Failed</title>
+        </head>
+        <body>
+            <h2>Registration Failed</h2>
+            <p>Sorry, there was an error registering your account.</p>
+            <p>${err}</p>
+        </body>
+        </html>
+      `;
       console.log(err);
     } else {
       const successHTML = `
@@ -76,9 +87,36 @@ app.post('/login', (req, res) => {
       res.status(500).json({ message: 'Login failed' });
     } else {
       if (result.length === 1) {
-        res.send('Login successful');
+        const LogsuccessHTML=`
+        <html>
+        <head>
+            <title>Login Successful</title>
+        </head>
+        <body>
+            <h2>Login Successful</h2>
+            <p>Welcome to our website!</p>
+            <p>Your details:</p>
+            <ul>
+                <li><strong>Name:</strong> ${result[0].name}</li>
+                <li><strong>Username:</strong> ${result[0].username}</li>
+                <li><strong>Email:</strong> ${result[0].email}</li>
+            </ul>
+
+            </body>
+            </html>
+        `;
       } else {
-        res.status(401).json({ message: 'Login failed' });
+        const LogerrorHTML = `
+        <html>
+        <head>
+            <title>Login Failed</title>
+        </head>
+        <body>
+            <h2>Login Failed</h2>
+            <p>Sorry, your login details are incorrect.</p>
+        </body>
+        </html>
+      `;
       }
     }
   });
