@@ -105,6 +105,7 @@ app.post('/login', (req, res) => {
             </body>
             </html>
         `;
+        res.send(LogsuccessHTML);
       } else {
         const LogerrorHTML = `
         <html>
@@ -117,6 +118,7 @@ app.post('/login', (req, res) => {
         </body>
         </html>
       `;
+        res.send(LogerrorHTML);
       }
     }
   });
