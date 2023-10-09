@@ -1,19 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Login Form</title>
+    <title>User Registration and Login</title>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+          text-align: center;
+      }
+
+      h2 {
+          color: #333;
+      }
+
+      .hidden {
+          display: none;
+      }
+
+      form {
+          width: 500px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      label {
+          display: block;
+          margin-bottom: 10px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+          width: 80%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+      }
+
+      input[type="submit"] {
+          background-color: #333;
+          color: #fff;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+          background-color: #555;
+      }
+
+      input[type="radio"] {
+          margin-right: 10px;
+      }
+  </style>
 </head>
 <body>
-  <h1>Login Form</h1>
-  <form action="/login" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <br>
-    <input type="submit" value="Login">
-  </form>
+    <h2>User Registration and Login</h2>
+
+    <input type="radio" name="action" id="registerRadio" onclick="toggleForm('registerForm')"> Register
+    <input type="radio" name="action" id="loginRadio" onclick="toggleForm('loginForm')"> Login
+
+    <form id="registerForm" class="hidden" action="/register" method="POST">
+        <h2>User Registration</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <form id="loginForm" class="hidden" action="/login" method="POST">
+        <h2>User Login</h2>
+        <label for="login_username">Username:</label>
+        <input type="text" id="login_username" name="login_username" required><br><br>
+
+        <label for="login_password">Password:</label>
+        <input type="password" id="login_password" name="login_password" required><br><br>
+
+        <input type="submit" value="Login">
+    </form>
+
+    <script>
+        function toggleForm(formId) {
+            var registerForm = document.getElementById('registerForm');
+            var loginForm = document.getElementById('loginForm');
+            if (formId === 'registerForm') {
+                registerForm.style.display = 'block';
+                loginForm.style.display = 'none';
+            } else {
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
